@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+
+<f:view renderKitId="PRIMEFACES_MOBILE" />
+
+<h:head>
+<script >PrimeFaces.locales['pt'] = {
+        closeText: 'Fechar',
+        prevText: 'Anterior',
+        nextText: 'Próximo',
+        currentText: 'Começo',
+        monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+        monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun', 'Jul','Ago','Set','Out','Nov','Dez'],
+        dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+        dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+        dayNamesMin: ['D','S','T','Q','Q','S','S'],
+        weekHeader: 'Semana',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: '',
+        timeOnlyTitle: 'Só Horas',
+        timeText: 'Tempo',
+        hourText: 'Hora',
+        minuteText: 'Minuto',
+        secondText: 'Segundo',
+        currentText: 'Data Atual',
+        ampm: false,
+        month: 'Mês',
+        week: 'Semana',
+        day: 'Dia',
+        allDayText : 'Todo Dia'
+    };</script>
+</h:head>
+
+<h:body>
+<p:growl id="msg" sticky="false" life="1500" />
+ 
+	<h:form>
+		
+		<p:panelGrid columnClasses="value">
+			<p:schedule id="schedule"
+				value="#{lancamentosServicosBean.eventModel}" widgetVar="myschedule"
+				timeZone="America/Sao_Paulo" locale="pt">
+				
+				<p:ajax event="eventSelect" listener="#{lancamentosServicosBean.eventoSelecionado}" update="pnlServico" oncomplete="PF('dlg').show();" />
+				<p:ajax event="dateSelect" listener="#{lancamentosServicosBean.quandoNovo}" update="pnlServico" oncomplete="PF('dlg').show();" />
+				<p:ajax event="eventMove" listener="#{lancamentosServicosBean.onEventMove}" update="schedule" />
+           		<p:ajax event="eventResize" listener="#{lancamentosServicosBean.onEventResize}" update="schedule" />
+							
+			</p:schedule>
+		</p:panelGrid>
+		
+		<p:dialog widgetVar="dlg" header="Event" resizable="false" modal="true" showEffect="clip" >
+			<p:outputPanel id="pnlServico">
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Cliente"/>
+					<p:inputText value="#{lancamentosServicosBean.servicos.cliente}"/>
+					
+					<p:outputLabel value="Inicio"/>
+					<p:calendar value="#{lancamentosServicosBean.servicos.dataInicio}" timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy HH:mm"/>
+					
+					<p:outputLabel value="Fim"/>
+					<p:calendar value="#{lancamentosServicosBean.servicos.dataFim}" timeZone="America/Sao_Paulo" pattern="dd/MM/yyyy HH:mm" timeOnly="true"/>
+								
+					
+					<p:outputLabel value="Valor"/>
+					<p:inputText value="#{lancamentosServicosBean.servicos.valor}"/>
+					
+				</p:panelGrid>
+				<p:separator/>
+				
+				<p:commandButton value="Agendar" actionListener="#{lancamentosServicosBean.salvar}" update="msg schedule @form"/>
+				
+			</p:outputPanel>
+		</p:dialog>		
+		
+
+	</h:form>	
+	
+	
+                <p:tabMenu activeIndex="0">
+                    
+                </p:tabMenu>
+        
+
+</h:body>
+
+</html>

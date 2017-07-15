@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pm="http://primefaces.org/mobile">
+     
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+     
+    <h:head>
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
+    </h:head>
+     
+    <h:body>      
+         
+         
+	
+        <pm:page id="list">
+        
+            <pm:header title="Clientes" swatch="b">
+                <p:commandButton styleClass="ui-btn-right ui-btn-inline" value="New" icon="ui-icon-plus" 
+                update="edit:editForm:editFormPanel" action="#{pesquisaClienteBean.prepareNovoCliente}"/>
+                
+               <h:form id="listForm1">  
+				<p:commandButton styleClass="ui-btn-left ui-btn-inline" value="Search" icon="ui-icon-search" 
+                update="list:listForm:contactsList @form" action="#{pesquisaClienteBean.filtrar}"/>
+                 <p:inputText style="margin-left:15px;margin-right:15px" value="#{pesquisaClienteBean.cliente.nome}" />                  
+                </h:form>
+            </pm:header>
+             
+            <pm:content>
+            	
+                <h:form id="listForm">
+                    <p:dataList  id="contactsList"  value="#{pesquisaClienteBean.clientes}" var="contact" pt:data-inset="true">
+                        <p:commandLink value="#{contact.nome}" update="edit:editForm:editFormPanel" action="pm:edit?transition=flip">
+                            <f:setPropertyActionListener value="#{contact}" target="#{pesquisaClienteBean.cliente}" />
+                        </p:commandLink> 
+                    </p:dataList>                                      
+                </h:form>
+            </pm:content>
+        </pm:page>
+         
+        <pm:page id="edit">
+            <pm:header title="Cliente" swatch="b">
+                <p:button styleClass="ui-btn-left ui-btn-inline" value="Back" icon="ui-icon-arrow-l" outcome="pm:list?transition=flip"/>
+                <p:commandButton styleClass="ui-btn-right ui-btn-inline" value="Delete" 
+                				 action="#{pesquisaClienteBean.remover}" icon="ui-icon-check"
+                				 update="list:listForm:contactsList"/>
+            </pm:header>
+             
+            <pm:content>
+                <h:form id="editForm">
+                    <p:outputPanel id="editFormPanel">
+                    
+                        <pm:field>
+                            <p:outputLabel for="firstname" value="Nome" />
+                            <p:inputText id="firstname"  value="#{pesquisaClienteBean.cliente.nome}"/>
+                        </pm:field>
+                        <pm:field>
+                            <p:outputLabel for="tel" value="Telefone" />                        
+                            <p:inputText id="tel"  value="#{pesquisaClienteBean.cliente.telefone}" type="tel" />
+                         </pm:field>
+                         <pm:field>  
+                            <p:outputLabel for="bairro" value="Bairro" />
+                            <p:inputText id="bairro"  value="#{pesquisaClienteBean.cliente.bairro}"/>
+                         </pm:field> 
+                         <pm:field> 
+                            <p:outputLabel for="email" value="E-mail" />
+                            <p:inputText id="email"  value="#{pesquisaClienteBean.cliente.email}"/>
+                        </pm:field>  
+                        
+                    </p:outputPanel>
+                     
+                    <p:commandButton value="Save" action="#{pesquisaClienteBean.salvar}" update="list:listForm:contactsList @form" icon="ui-icon-check">
+                   		
+                    </p:commandButton>
+                </h:form>
+                 
+            </pm:content>
+        </pm:page>
+         
+        <script language="javascript" src="#{request.contextPath}/syntaxhighlighter/scripts/sh.js"></script>
+        <script language="javascript">
+            SyntaxHighlighter.all();
+        </script>
+    </h:body>
+     
+</html>

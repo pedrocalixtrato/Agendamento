@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	
+</h:head>
+
+<h:body>
+
+   <h:form id="listForm">  
+<p:commandButton styleClass="ui-btn-left ui-btn-inline" value="Search" icon="ui-icon-search" 
+                update=":listForm:dtl @form" action="#{pesquisaClienteBean.filtrar}"/>
+                 <p:inputText value="#{pesquisaClienteBean.cliente.nome}" />
+                 
+                              
+                    
+                  <p:dataTable id="dtl"
+					value="#{pesquisaClienteBean.clientes}" var="cliente"
+					reflow="true" paginator="true" paginatorAlwaysVisible="true"
+					paginatorPosition="bottom">  
+					
+					<p:column headerText="Nome" filterBy="#{cliente.nome}" sortBy="#{cliente.nome}">
+						<p:commandLink value="#{cliente.nome}"  action="pm:edit?transition=flip">
+                            <f:setPropertyActionListener value="#{cliente}" target="#{pesquisaClienteBean.cliente}" />
+                        </p:commandLink> 
+					</p:column>
+					
+				 </p:dataTable>
+                  
+                </h:form>
+	
+
+
+</h:body>
+
+
+</html>
